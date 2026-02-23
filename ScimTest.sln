@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScimTest.Api", "ScimTest.Api\ScimTest.Api.csproj", "{3199D84F-9D32-45F6-8A52-85D5BBCCEF81}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3199D84F-9D32-45F6-8A52-85D5BBCCEF81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3199D84F-9D32-45F6-8A52-85D5BBCCEF81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3199D84F-9D32-45F6-8A52-85D5BBCCEF81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3199D84F-9D32-45F6-8A52-85D5BBCCEF81}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
