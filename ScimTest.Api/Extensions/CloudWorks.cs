@@ -10,5 +10,5 @@ public class CloudWorks : ResourceExtension
     [Description(
         "Sites user belongs to. A complex type that optionally allows to set the list of sites user is part of."
     )]
-    public IEnumerable<Site>? Sites { get; set; }
+    public string SiteId { get; set; }
 }

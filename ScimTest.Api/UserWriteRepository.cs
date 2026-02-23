@@ -28,9 +28,9 @@ public class UserWriteRepository : IUserWriteRepository
 
     public async Task<User> Add(User resource)
     {
-        IEnumerable<Site> sites = GetCloudWorksSites(resource);
+        var siteId= GetCloudWorksSites(resource);
         var user = MapScimUserToAppUser(resource, new AppUser());
-        user.LastName = sites.First().Id;
+        user.LastName = siteId;
         
         await ctx.Users.AddAsync(user);
         try
@@ -163,23 +163,23 @@ public class UserWriteRepository : IUserWriteRepository
         return user;
     }
      
-    private IEnumerable<Site> GetCloudWorksSites(User resource)
+    private string GetCloudWorksSites(User resource)
     {
         if (resource.Extensions is null)
         {
-            return [];
+            return string.Empty;
         }
 
         if (!resource.Extensions.TryGetValue(CloudWorks.Schema, out ResourceExtension? ext))
         {
-            return [];
+            return string.Empty;
         }
 
         if (ext is not CloudWorks cloudWorks)
         {
-            return [];
+            return string.Empty;
         }
 
-        return cloudWorks.Sites ?? [];
+        return cloudWorks.SiteId ?? string.Empty;
     }
 }
