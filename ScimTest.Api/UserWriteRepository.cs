@@ -4,6 +4,7 @@ using Rsk.AspNetCore.Scim.Filters;
 using Rsk.AspNetCore.Scim.Hosting.Tenancy;
 using Rsk.AspNetCore.Scim.Models;
 using Rsk.AspNetCore.Scim.Stores;
+using ScimTest.Api.Extensions;
 
 namespace ScimTest.Api;
 
@@ -27,7 +28,10 @@ public class UserWriteRepository : IUserWriteRepository
 
     public async Task<User> Add(User resource)
     {
+        IEnumerable<Site> sites = GetCloudWorksSites(resource);
         var user = MapScimUserToAppUser(resource, new AppUser());
+        user.LastName = sites.First().Id;
+        
         await ctx.Users.AddAsync(user);
         try
         {
@@ -157,5 +161,25 @@ public class UserWriteRepository : IUserWriteRepository
         user.UserType = resource.UserType;
         
         return user;
+    }
+     
+    private IEnumerable<Site> GetCloudWorksSites(User resource)
+    {
+        if (resource.Extensions is null)
+        {
+            return [];
+        }
+
+        if (!resource.Extensions.TryGetValue(CloudWorks.Schema, out ResourceExtension? ext))
+        {
+            return [];
+        }
+
+        if (ext is not CloudWorks cloudWorks)
+        {
+            return [];
+        }
+
+        return cloudWorks.Sites ?? [];
     }
 }

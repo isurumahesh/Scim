@@ -3,6 +3,7 @@ using Rsk.AspNetCore.Scim.Configuration;
 using Rsk.AspNetCore.Scim.Constants;
 using Rsk.AspNetCore.Scim.Models;
 using ScimTest.Api;
+using ScimTest.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,7 +35,7 @@ builder.Services.AddScimServiceProvider("/SCIM",
             PaginationOptions = new PaginationOptions(true, true, PaginationMethod.Index)
         })
     .AddResource<User, UserStore>(ScimSchemas.User, "users")
-    .AddResourceExtension<User, EnterpriseUser>(ScimSchemas.EnterpriseUser)
+    .AddResourceExtension<User, CloudWorks>(CloudWorks.Schema)
    // .AddResource<Group, AppRoleStore>(ScimSchemas.Group, "groups")
     .AddFilterPropertyExpressionCompiler()
     .MapScimAttributes<AppUser>(ScimSchemas.User, mapper =>
