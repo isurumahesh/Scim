@@ -12,10 +12,12 @@ public class WeatherForecastController : ControllerBase
     };
 
     private readonly ILogger<WeatherForecastController> _logger;
+    private readonly AppDbContext _ctx;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    public WeatherForecastController(ILogger<WeatherForecastController> logger, AppDbContext ctx)
     {
         _logger = logger;
+        _ctx = ctx;
     }
 
     [HttpGet(Name = "GetWeatherForecast")]
@@ -28,5 +30,14 @@ public class WeatherForecastController : ControllerBase
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+    }
+    
+    [HttpDelete(Name = "GetWeatherForecast")]
+    public async Task<IActionResult> Delete()
+    {
+        var allusers= _ctx.Users.ToList();
+        _ctx.Users.RemoveRange(allusers);
+        await _ctx.SaveChangesAsync();
+        return NoContent();
     }
 }
