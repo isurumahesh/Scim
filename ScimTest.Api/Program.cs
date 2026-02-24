@@ -36,6 +36,7 @@ builder.Services.AddScimServiceProvider("/SCIM",
         })
     .AddResource<User, UserStore>(ScimSchemas.User, "users")
     .AddResourceExtension<User, CloudWorks>(CloudWorks.Schema)
+    .AddResourceExtension<User, Enterprise>(Enterprise.Schema)
    // .AddResource<Group, AppRoleStore>(ScimSchemas.Group, "groups")
     .AddFilterPropertyExpressionCompiler()
     .MapScimAttributes<AppUser>(ScimSchemas.User, mapper =>

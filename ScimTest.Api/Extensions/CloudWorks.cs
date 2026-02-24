@@ -12,3 +12,11 @@ public class CloudWorks : ResourceExtension
     )]
     public string SiteId { get; set; }
 }
+
+
+public class Enterprise : ResourceExtension
+{
+    public const string Schema = "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User";
+    
+    public string Department { get; set; }
+}

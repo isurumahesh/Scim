@@ -20,7 +20,7 @@ public static class DatabaseInitializer
         context.Roles.AddRange(roles);
         context.SaveChanges();
 
-        Enumerable.Range(1, 50)
+        Enumerable.Range(1, 5)
             .Select(i => AddUser(context))
             .ToList();
     }
