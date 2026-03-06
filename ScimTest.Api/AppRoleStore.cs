@@ -29,6 +29,8 @@ public class AppRoleStore : IScimStore<Group>
     public async Task<Group> Add(Group resource)
     {
         var role = new AppRole();
+        role.Name = resource.DisplayName;
+        
         MapScimGroupToAppRole(resource, role);
 
         await ctx.Roles.AddAsync(role);
@@ -105,14 +107,14 @@ public class AppRoleStore : IScimStore<Group>
                 .Filter(query.Filter)
                 .Build();
 
-        IQueryable<AppRole> pageQuery = queryBuilderFactory.CreateQueryBuilder<AppRole>(databaseQuery)
-            .Page(query.StartIndex, query.Count)
-            .Sort(query.Sort.By, query.Sort.Direction)
-            .Build();
+        // IQueryable<AppRole> pageQuery = queryBuilderFactory.CreateQueryBuilder<AppRole>(databaseQuery)
+        //     .Page(query.StartIndex, query.Count)
+        //     .Sort(query.Sort.By, query.Sort.Direction)
+        //     .Build();
 
         int totalCount = await databaseQuery.CountAsync();
 
-        var matchingGroups = await pageQuery
+        var matchingGroups = await databaseQuery
             .AsAsyncEnumerable()
             .Select(MapAppRoleToScimGroup)
             .ToListAsync();
