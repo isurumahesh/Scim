@@ -38,6 +38,11 @@ public class WeatherForecastController : ControllerBase
         var allusers= _ctx.Users.ToList();
         _ctx.Users.RemoveRange(allusers);
         await _ctx.SaveChangesAsync();
+        
+        var allRoles= _ctx.Roles.ToList();
+        _ctx.Roles.RemoveRange(allRoles);
+        await _ctx.SaveChangesAsync();
+        
         return NoContent();
     }
 }

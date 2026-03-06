@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Rsk.AspNetCore.Scim.Constants;
 using Rsk.AspNetCore.Scim.Exceptions;
@@ -14,11 +15,13 @@ public class AppRoleStore : IScimStore<Group>
 {
     private readonly AppDbContext ctx;
     private readonly IScimQueryBuilderFactory queryBuilderFactory;
+    private readonly ILogger<AppRoleStore> _logger;
 
-    public AppRoleStore(AppDbContext ctx , IScimQueryBuilderFactory queryBuilderFactory)
+    public AppRoleStore(AppDbContext ctx ,ILogger<AppRoleStore> logger, IScimQueryBuilderFactory queryBuilderFactory)
     {
         this.ctx = ctx ?? throw new ArgumentNullException(nameof(ctx));
         this.queryBuilderFactory = queryBuilderFactory;
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     public async Task<IEnumerable<string>> Exists(IEnumerable<string> ids)
@@ -28,6 +31,8 @@ public class AppRoleStore : IScimStore<Group>
 
     public async Task<Group> Add(Group resource)
     {
+        _logger.LogInformation("SCIM Group: Add {Group}", JsonSerializer.Serialize(resource));
+        
         var role = new AppRole();
         role.Name = resource.DisplayName;
         
@@ -119,6 +124,7 @@ public class AppRoleStore : IScimStore<Group>
             .Select(MapAppRoleToScimGroup)
             .ToListAsync();
 
+        _logger.LogInformation("SCIM Group: Get All {Group}", JsonSerializer.Serialize(matchingGroups));
         return new ScimPageResults<Group>(matchingGroups, totalCount);
     }
 
