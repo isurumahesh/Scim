@@ -60,6 +60,31 @@ builder.Services.AddScimServiceProvider("/SCIM",
             .Map("name.middleName", propertyAccessor: u => u.MiddleName)
             .Map("name.honorificPrefix", propertyAccessor: u => u.HonorificPrefix)
             .Map("name.honorificSuffix", u => u.HonorificSuffix);
+    }).MapScimAttributes<AppRole>(ScimSchemas.Group, mapper =>
+    {
+        mapper
+            .Map("id", r => r.Id)
+            .Map("displayName", r => r.Name)
+            .MapCollection<Member>("members", r => r.Members, member =>
+            {
+                member
+                    .Map("value", m => m.Value)
+                    .Map("display", m => m.Display)
+                    .Map("type", m => m.Type);
+            });
+    })
+    .MapScimAttributes<AppRole>(ScimSchemas.Group, mapper =>
+    {
+        mapper
+            .Map("id", r => r.Id)
+            .Map("displayName", r => r.Name)
+            .MapCollection<Member>("members", r => r.Members, member =>
+            {
+                member
+                    .Map("value", m => m.Value)
+                    .Map("display", m => m.Display)
+                    .Map("type", m => m.Type);
+            });
     });
 
 var app = builder.Build();

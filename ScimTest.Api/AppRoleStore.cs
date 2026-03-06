@@ -107,14 +107,14 @@ public class AppRoleStore : IScimStore<Group>
                 .Filter(query.Filter)
                 .Build();
 
-        // IQueryable<AppRole> pageQuery = queryBuilderFactory.CreateQueryBuilder<AppRole>(databaseQuery)
-        //     .Page(query.StartIndex, query.Count)
-        //     .Sort(query.Sort.By, query.Sort.Direction)
-        //     .Build();
+        IQueryable<AppRole> pageQuery = queryBuilderFactory.CreateQueryBuilder<AppRole>(databaseQuery)
+            .Page(query.StartIndex, query.Count)
+            .Sort(query.Sort.By, query.Sort.Direction)
+            .Build();
 
         int totalCount = await databaseQuery.CountAsync();
 
-        var matchingGroups = await databaseQuery
+        var matchingGroups = await pageQuery
             .AsAsyncEnumerable()
             .Select(MapAppRoleToScimGroup)
             .ToListAsync();
