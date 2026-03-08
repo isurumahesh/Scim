@@ -32,6 +32,11 @@ public class AppRoleStore : IScimStore<Group>
     public async Task<Group> Add(Group resource)
     {
         _logger.LogInformation("SCIM Group: Add {Group}", JsonSerializer.Serialize(resource));
+
+        if (resource.Members?.Any() == true)
+        {
+            _logger.LogInformation("SCIM Group: Add Members {Members}", JsonSerializer.Serialize(resource.Members));
+        }
         
         var role = new AppRole();
         role.Name = resource.DisplayName;
@@ -71,6 +76,8 @@ public class AppRoleStore : IScimStore<Group>
 
             foreach (var member in resource.Members)
             {
+                _logger.LogInformation("SCIM Group: Add Member inside loop {Member}", member.Value);
+                
                 AppUser user = new(member.Value);
                 ctx.Users.Attach(user);
                 appRole.Members.Add(user);
